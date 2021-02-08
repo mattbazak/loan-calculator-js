@@ -1,14 +1,21 @@
 // listen for submit
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function(e){
+  // hide results
+  document.getElementById('results').style.display = 'none';
+  // show loader
+  document.getElementById('loading').style.display = 'block';
+  setTimeout(calculateResults, 1200);
+  e.preventDefault();
+});
 document.getElementById('form-reset').addEventListener('submit', resetInput); 
-document.querySelector('.results').style.display = 'none';
+
 
 // Calculate results
 
 
 
 
-function calculateResults(e) {
+function calculateResults() {
   // UI Variables
   const UIamount = document.getElementById('amount');
   const UIinterest = document.getElementById('interest');
@@ -27,17 +34,18 @@ function calculateResults(e) {
 
 
   if(isFinite(UImonthly)) {
-    document.querySelector('.results').style.display = 'block'
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('loading').style.display = 'none';
     UImonthlyPayment.value = UImonthly.toFixed(2);
     UItotalPayment.value = (UImonthly * UIcalculatedPayment).toFixed(2);
     UItotalInterest.value = ((UImonthly * UIcalculatedPayment)-UIpirnciple).toFixed(2);
   } else {
     showError('Please Check your input')
   }
-  e.preventDefault();
 }
 
 function showError(error){
+  document.getElementById('loading').style.display = 'none';
   // create Div
   const errorDiv = document.createElement('div');
   // get elements
